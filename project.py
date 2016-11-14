@@ -36,13 +36,6 @@ postdataSign = {
   'ButtonAssistantClockin':'計畫助理簽到'
 }
 
-headerSign = {
-  'Host':'signin.fcu.edu.tw',
-  'Content-Type':'application/x-www-form-urlencoded',
-  'Referer':'https://signin.fcu.edu.tw/clockin/Student.aspx',
-  'User-Agent':'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'
-}
-
 # parse form data
 for element in response.findAll('input',{'type':'hidden','value':True}):
   postdataSign[str(element['name'])] = str(element['value'])
@@ -61,8 +54,10 @@ postdataCheck = {
 for element in response.findAll('input',{'type':'hidden','value':True}):
   postdataCheck[str(element['name'])] = str(element['value'])
 # parse project number
-for element in response.findAll('option',{'value':True}):
-  print element['value']
+for element in response.findAll('select',{'name':'DropDownListProject'}):
+  response2 = bs4(str(element))
+  for element2 in response2.findAll('option',{'value':True}):
+    print element2['value']
 # log in
 checkHtml = s.post(urlCheck,data=postdataCheck,headers=header)
 response = bs4(checkHtml.text)
