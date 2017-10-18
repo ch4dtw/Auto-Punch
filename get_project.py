@@ -1,7 +1,6 @@
 #-*- coding: UTF-8 -*-
 import requests
-import re
-from config import account,password,projectID,hour
+from config import account,password
 from BeautifulSoup import BeautifulSoup as bs4
 
 s = requests.session()
@@ -16,6 +15,7 @@ header = {
 # get initial page session
 r = s.get(urlLogin)
 response = bs4(r.text)
+
 # initial login paraments
 postdataLogin = {
   'i__EVENTTARGET':'',
@@ -42,19 +42,9 @@ for element in response.findAll('input',{'type':'hidden','value':True}):
   postdataSign[str(element['name'])] = str(element['value'])
 # log in
 signInHtml = s.post(urlSign,data=postdataSign,headers=header)
-response = bs4(signInHtml.text)
-# initial sign in paraments
-urlCheck = "https://signin.fcu.edu.tw/clockin/AssistantClockin.aspx"
-postdataCheck = {
-  'DropDownListProject': projectID,
-  'DropDownListHour': hour,
-  'ButtonClockin':'簽到'
-}
 
-# parse form data
-for element in response.findAll('input',{'type':'hidden','value':True}):
-  postdataCheck[str(element['name'])] = str(element['value'])
-# log in
-checkHtml = s.post(urlCheck,data=postdataCheck,headers=header)
-response = bs4(checkHtml.text)
-print projectID + ', ' + re.findall('alert\(\'(.*)\'\)',response.text)[0]
+response = bs4(signInHtml.text)
+for elements in response.findAll('select',{'name':'DropDownListProject'}):
+  for element in elements.findAll('option'):
+    print element.get('value') + ', ' + element.text
+
