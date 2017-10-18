@@ -57,4 +57,4 @@ for element in response.findAll('input',{'type':'hidden','value':True}):
 # log in
 checkHtml = s.post(urlCheck,data=postdataCheck,headers=header)
 response = bs4(checkHtml.text)
-print account + ', ' + projectID + ', ' + hour + 'hr, ' + re.findall('alert\(\'(.*)\'\)',response.text)[0]
+print account + ', ' + projectID + ', ' + str(hour) + 'hr, ' + re.findall('alert\(\'(.*)\'\)',response.text)[0]
