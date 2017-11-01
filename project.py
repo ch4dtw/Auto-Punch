@@ -3,7 +3,15 @@ import requests
 import re
 from config import account,password,projectID,hour
 from BeautifulSoup import BeautifulSoup as bs4
-
+import netifaces as ni
+requests.get('http://140.134.18.25/cgi-bin/login?cmd=logout')
+wifi_login='http://140.134.18.25/auth/index.html/u'
+wifi_data={
+'user':account,
+'password':password,
+'PtButton':'Logon'
+}
+requests.post(wifi_login,data=wifi_data)
 s = requests.session()
 # initial request paraments
 urlLogin = "https://signin.fcu.edu.tw/clockin/login.aspx"
